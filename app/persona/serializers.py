@@ -1,10 +1,22 @@
 from rest_framework import serializers
-from .models import Person
+from .models import Person, Reunion, Hobby
+
+
+class HobbySerializer(serializers.ModelSerializer):
+    
+    class Meta:
+        model = Hobby
+        fields = ('__all__')
+
+
  
 class PersonSerializer(serializers.ModelSerializer):
+
+    hobbies = HobbySerializer(many=True) # Con esto me aseguro  de ver el detalle de los hobbies
+
     class Meta:
         model= Person
-        fields = ('id','full_name','job','email','phone')
+        fields = ('__all__')
 
 
 #--Creamos un serializador que no depende de un modelo
@@ -29,3 +41,23 @@ class PersonSerializer2(serializers.ModelSerializer):
         model= Person
         fields = ('id','full_name','job','email','phone')
 """
+
+
+class ReunionSerializer(serializers.ModelSerializer):
+
+    person = PersonSerializer()
+
+    
+    class Meta:
+        model = Reunion
+        fields = (
+            'id',
+            'fecha',
+            'hora',
+            'asunto',
+            'person',
+           
+        )
+
+
+

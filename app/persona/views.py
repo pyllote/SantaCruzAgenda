@@ -1,8 +1,8 @@
 from django.shortcuts import render
 from rest_framework import generics
 
-from .models import Person
-from .serializers import PersonSerializer, PersonaSerializer
+from .models import Person, Reunion
+from .serializers import PersonSerializer, PersonaSerializer, ReunionSerializer
 
 # Create your views here.
 
@@ -55,3 +55,12 @@ class PersonApiLista(generics.ListAPIView):
     
     def get_queryset(self):
         return Person.objects.all()
+
+
+
+class ReunionListApiView(generics.ListAPIView):
+
+    serializer_class = ReunionSerializer
+    
+    def get_queryset(self):
+        return Reunion.objects.all()

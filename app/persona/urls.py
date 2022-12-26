@@ -1,6 +1,6 @@
 from django.urls import path
 from app.persona.views import PersonListApiView, PersonaCreateApiView, PersonDetailView, \
-    PersonDeleteView, PersonActualizarView, PersonApiLista
+    PersonDeleteView, PersonActualizarView, PersonApiLista, ReunionListApiView
 
 urlpatterns = [
     path('api/persona/list',PersonListApiView.as_view(),name='personas'),
@@ -11,4 +11,7 @@ urlpatterns = [
 
     #URL para ver el funcionamiento de un serializador que no depende de un modelo
     path('api/persona/listado',PersonApiLista.as_view(),name='personaslistado'),
+
+    #--URL para reunion
+    path('api/reunion/lista',ReunionListApiView.as_view(),name='reunion'),
 ]
