@@ -2,6 +2,7 @@
 from model_utils.models import TimeStampedModel
 #
 from django.db import models
+from .managers import ReunionManager
 
 
 #
@@ -60,6 +61,8 @@ class Reunion(TimeStampedModel):
     fecha = models.DateField()
     hora = models.TimeField()
     asunto = models.CharField('Asunto de Reunión',max_length=150)
+
+    objects = ReunionManager()
 
     class Meta:
         verbose_name = 'Reunion'

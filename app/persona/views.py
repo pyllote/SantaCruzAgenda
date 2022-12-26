@@ -2,7 +2,8 @@ from django.shortcuts import render
 from rest_framework import generics
 
 from .models import Person, Reunion
-from .serializers import PersonSerializer, PersonaSerializer, ReunionSerializer
+from .serializers import PersonSerializer, PersonaSerializer, ReunionSerializer, \
+    ReunionSerializer2, ReunionSerializerLink, PersonPagination, CountReunionSerializer
 
 # Create your views here.
 
@@ -60,7 +61,39 @@ class PersonApiLista(generics.ListAPIView):
 
 class ReunionListApiView(generics.ListAPIView):
 
-    serializer_class = ReunionSerializer
+    #serializer_class = ReunionSerializer lo cambio para aplicar el serializer qeu trae el método
+    serializer_class = ReunionSerializer2
     
     def get_queryset(self):
         return Reunion.objects.all()
+
+
+
+class ReunionApiListaLink(generics.ListAPIView):
+    
+    serializer_class = ReunionSerializerLink
+
+    def get_queryset(self):
+        return Reunion.objects.all()
+
+
+
+class PersonPaginationLits(generics.ListAPIView):
+    """
+        lista personas con paginacion
+    """
+
+    serializer_class = PersonaSerializer
+    pagination_class = PersonPagination
+
+    def get_queryset(self):
+        return Person.objects.all()
+
+
+
+class ReunionByPersonJob(generics.ListAPIView):
+
+    serializer_class = CountReunionSerializer
+
+    def get_queryset(self):
+        return Reunion.objects.cantidad_reuniones_job()

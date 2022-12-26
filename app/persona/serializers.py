@@ -1,4 +1,4 @@
-from rest_framework import serializers
+from rest_framework import serializers, pagination
 from .models import Person, Reunion, Hobby
 
 
@@ -61,3 +61,52 @@ class ReunionSerializer(serializers.ModelSerializer):
 
 
 
+#--Creamos un nuevo serializador para incorporar un método dentro de el
+
+class ReunionSerializer2(serializers.ModelSerializer):
+
+    fecha_hora = serializers.SerializerMethodField() # Esto me permite incoporar el método
+    person = PersonSerializer() # Este me permite tener el detalle de la persona y evitar ver solamente el id
+
+    class Meta:
+        model = Reunion
+        fields = (
+            'id',
+            'fecha',
+            'hora',
+            'asunto',
+            'person',
+            'fecha_hora',
+        )
+    
+    def get_fecha_hora(self, obj):
+        return str(obj.fecha) + ' - ' + str(obj.hora)
+
+
+#--Creamos un serializer que contendrá un link
+
+class ReunionSerializerLink(serializers.HyperlinkedModelSerializer):
+
+    class Meta:
+        model = Reunion
+        fields = (
+            'id',
+            'fecha',
+            'hora',
+            'asunto',
+            'person',
+        )
+        extra_kwargs = {
+            'person': {'view_name': 'persona:detallepersona', 'lookup_field': 'pk'}
+        }
+
+
+
+class PersonPagination(pagination.PageNumberPagination):
+    page_size = 3
+    max_page_size = 100
+
+
+class CountReunionSerializer(serializers.Serializer):
+    person__job = serializers.CharField()
+    cantidad = serializers.IntegerField()
