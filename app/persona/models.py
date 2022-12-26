@@ -5,6 +5,21 @@ from django.db import models
 
 
 #
+class Hobby(TimeStampedModel):
+
+    hobby = models.CharField('Pasa tiempo', max_length=50)
+
+    class Meta:
+        verbose_name = 'Hobby'
+        verbose_name_plural = 'Hobbies'
+    
+
+    def __str__(self):
+        return '{}'.format(self.hobby)
+
+
+
+
 class Person(TimeStampedModel):
     """  Modelo para registrar personas de una agenda  """
 
@@ -27,10 +42,28 @@ class Person(TimeStampedModel):
         blank=True,
     )
 
+    hobbies = models.ManyToManyField(Hobby)
+
 
     class Meta:
         verbose_name = 'Persona'
         verbose_name_plural = 'Personas'
     
     def __str__(self):
-        return self.full_name
+        return '{}'.format(self.full_name)
+
+
+
+
+class Reunion(TimeStampedModel):
+    person = models.ForeignKey(Person, on_delete=models.CASCADE)
+    fecha = models.DateField()
+    hora = models.TimeField()
+    asunto = models.CharField('Asunto de Reunión',max_length=150)
+
+    class Meta:
+        verbose_name = 'Reunion'
+        verbose_name_plural = 'Reuniones'
+    
+    def __str__(self):
+        return '{}'.format(self.asunto)

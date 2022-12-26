@@ -2,7 +2,7 @@ from django.shortcuts import render
 from rest_framework import generics
 
 from .models import Person
-from .serializers import PersonSerializer
+from .serializers import PersonSerializer, PersonaSerializer
 
 # Create your views here.
 
@@ -44,3 +44,14 @@ class PersonDeleteView(generics.DestroyAPIView):
 
     def get_queryset(self):
         return Person.objects.filter()
+
+
+#--Creamos una vista para usar el serializador
+#--Que no depende del modelo
+
+class PersonApiLista(generics.ListAPIView):
+
+    serializer_class = PersonaSerializer
+    
+    def get_queryset(self):
+        return Person.objects.all()
